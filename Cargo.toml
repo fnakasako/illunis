@@ -1,0 +1,72 @@
+[package]
+name = "sovereign-attention-protocol"
+version = "0.1.0"
+edition = "2021"
+description = "A decentralized protocol for sovereign attention management"
+authors = ["Your Name <your.email@example.com>"]
+license = "MIT"
+
+[lib]
+name = "sap"
+path = "src/lib.rs"
+
+[[bin]]
+name = "sap"
+path = "src/main.rs"
+
+[dependencies]
+# Async runtime
+tokio = { version = "1.32", features = ["full"] }
+async-trait = "0.1.73"
+
+# Database
+sqlx = { version = "0.7", features = ["runtime-tokio-native-tls", "sqlite", "chrono"] }
+
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Time handling
+chrono = { version = "0.4", features = ["serde"] }
+
+# Regular expressions
+regex = "1.9"
+
+# CLI
+clap = { version = "4.4", features = ["derive"] }
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Cryptography (for future P2P features)
+ring = "0.16"
+ed25519-dalek = "1.0"
+
+# P2P networking (for future federation)
+libp2p = { version = "0.51", features = ["tcp", "websocket", "noise", "mplex", "yamux", "dns"] }
+
+[dev-dependencies]
+tempfile = "3.8"
+tokio-test = "0.4"
+pretty_assertions = "1.4"
+
+[features]
+default = ["sqlite"]
+sqlite = []
+federation = ["libp2p"]
+ml = []
+
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = 3
+debug = false
+
+[profile.dev]
+opt-level = 0
+debug = true
